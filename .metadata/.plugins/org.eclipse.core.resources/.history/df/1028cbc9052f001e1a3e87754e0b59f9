@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+<!-- 配置Struts数据源 -->
+  <data-sources>
+    <data-source type="org.apache.commons.dbcp.BasicDataSource">      
+      <set-property property="driverClassName" value="com.mysql.jdbc.Driver" />
+      <set-property property="url" value="jdbc:mysql://localhost:3306/member?characterEncoding=gb2312" />
+      <set-property property="username" value="root" /> 
+      <set-property property="password" value="root" />
+      <set-property property="minActive" value="2" />
+      <set-property property="maxActive" value="20" />     
+      <set-property property="defaultAutoCommit" value="true" />
+    </data-source>  
+  </data-sources>
+
+<!-- 配置ActionForm Bean -->  
+  <form-beans >
+    <form-bean name="addMemberForm" type="org.apache.struts.validator.DynaValidatorForm">
+      <form-property name="phone" type="java.lang.String" />
+      <form-property name="password" type="java.lang.String" />
+      <form-property name="address" type="java.lang.String" />
+      <form-property name="username" type="java.lang.String" />
+      <form-property name="email" type="java.lang.String" />
+      <form-property name="birthday" type="java.lang.String" />
+    </form-bean>
+    <form-bean name="loginForm" type="com.struts.form.LoginForm" />
+  </form-beans>
+
+  <global-exceptions />
+  
+<!-- 配置全局转发关系 -->  
+  <global-forwards >
+    <forward name="index" path="/index.jsp" />
+    <forward name="add" path="/addMember.jsp" />
+    <forward name="list" path="/listMember.jsp" />
+    <forward name="login" path="/login.jsp" />
+  </global-forwards>
+
+  
+<!-- 配置Action映射 -->    
+  <action-mappings >
+    <action
+      attribute="addMemberForm"
+      input="/addMember.jsp"
+      name="addMemberForm"
+      path="/addMember"
+      scope="request"
+      type="com.struts.action.AddMemberAction" />
+    <action path="/listMember" type="com.struts.action.ListMemberAction" />
+    <action path="/deleteMember" type="com.struts.action.DeleteMemberAction" />
+    <action
+      attribute="loginForm"
+      input="/login.jsp"
+      name="loginForm"
+      path="/login"
+      scope="request"
+      type="com.struts.action.LoginAction">
+      <forward name="success" path="/success.jsp" />
+    </action>
+  </action-mappings>
+
+<!-- 配置消息资源 --> 
+  <message-resources parameter="com.struts.ApplicationResources" />
+  
+<!-- 配置Validator表单验证插件 -->  
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+    <set-property property="pathnames" value="/WEB-INF/validator-rules.xml,
+                                              /WEB-INF/validation.xml"/>
+  </plug-in>
+    
+</struts-config>
+

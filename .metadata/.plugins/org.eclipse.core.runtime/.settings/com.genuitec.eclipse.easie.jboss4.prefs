@@ -1,0 +1,10 @@
+#Sat Nov 28 14:19:28 CST 2009
+SHUTDOWN_ARGS=
+SERVER_STARTUP_ARG=-c default
+LIBRARY_PATH="D\:\\program\\jdk\\bin"
+JBOSS_HOME=G\:\\soft\\Jboss\\jboss-4.2.2.GA
+ENDORSED_DIRS="G\:\\Jboss\\jboss-4.2.2.GA\\lib\\endorsed"
+eclipse.preferences.version=1
+JDK_INSTALLATION_NAME=jdk
+JDK_HOME=D\:\\program\\jdk
+SERVER_ENABLEMENT=true

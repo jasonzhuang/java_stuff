@@ -1,0 +1,264 @@
+package org.hotelmanager.dao.impl;
+
+import java.util.List;
+import org.hotelmanager.dao.RoomTypeDao;
+import org.hotelmanager.entity.RoomType;
+
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import org.hotelmanager.dbprocess.ConnectionManager;
+import org.hotelmanager.utils.Common;
+import java.util.ArrayList;
+import java.sql.Types;
+
+/**
+ * 类名：RoomTypeDaoImpl
+ * 作者：李君
+ * 作用：实现RoomTypeDao的相关方法
+ * 开发日期：2008-10-15
+ */
+public class RoomTypeDaoImpl implements RoomTypeDao {
+	
+	/**
+	 * 连接对象
+	 */
+	private Connection conn = null;
+	
+	/**
+	 * 存储过程对象
+	 */
+	private PreparedStatement psmt = null;
+	
+	
+	/**
+	 * 结果集对象
+	 */
+	private ResultSet rs = null;
+	
+	/**
+	 * 构造方法
+	 */
+	public RoomTypeDaoImpl() {
+		
+	}	
+	
+	/**
+	 * 添加客房类型信息
+	 * @param roomType 客房类型实体对象
+	 * @return 添加是否成功
+	 */
+	public boolean addRoomType(RoomType roomType) {
+		// TODO Auto-generated method stub
+		boolean flag = false;
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		try {
+			//执行存储过程
+			psmt = conn.prepareStatement("insert into roomtype values(?,?,?,?,?)");
+			psmt.setString(1, roomType.getTypeName());
+			psmt.setDouble(2, roomType.getTypePrice());
+			psmt.setString(3, roomType.getIsAddBed());
+			psmt.setDouble(4, roomType.getAddBedPrice());
+			psmt.setString(5, roomType.getRemark());
+			if (psmt.executeUpdate() > 0) {
+				flag = true;
+			}
+		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			Common.errLog(ex.toString());
+		} finally {
+			ConnectionManager.closeConnection(conn);
+		}
+		return flag;
+	}
+	
+	/**
+	 * 根据客房类型编号删除客房类型
+	 * @param typeId 客房类型编号
+	 * @return 删除是否成功
+	 */
+	public boolean delRoomTypeByTypeId(int typeId) {
+		// TODO Auto-generated method stub
+		boolean flag = false;
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		try {
+			//执行存储过程
+			psmt = conn.prepareStatement("DELETE FROM Room WHERE RoomId =?");
+			psmt.setInt(1, typeId);
+			if (psmt.executeUpdate() > 0) {
+				flag = true;
+			}
+		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			Common.errLog(ex.toString());
+		} finally {
+			ConnectionManager.closeConnection(conn);
+		}		
+		return flag;
+	}
+	
+	/**
+	 * 获取所有客房类型信息
+	 * @return 返回客房类型集合
+	 */
+	public List<RoomType> getAllRoomTypes() {
+		// TODO Auto-generated method stub
+		ArrayList<RoomType> types = new ArrayList<RoomType>();
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		try {
+			//执行存储过程
+			psmt = conn.prepareStatement("SELECT * FROM RoomType");
+			rs = psmt.executeQuery();
+			while(rs != null && rs.next()) {
+				RoomType type = new RoomType(rs.getInt("TypeId"),
+											 rs.getString("TypeName"),
+											 rs.getDouble("TypePrice"),
+											 rs.getString("IsAddBed"),
+											 rs.getDouble("AddBedPrice"),
+											 rs.getString("Remark"));
+				types.add(type);
+			}
+		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			Common.errLog(ex.toString());
+			return null;
+		} finally {
+			ConnectionManager.closeResultSet(rs);
+			ConnectionManager.closeConnection(conn);
+		}
+		return types;
+	}
+	
+	/**
+	 * 根据客房类型编号获取客房类型信息
+	 * @param typeId 客房类型编号
+	 * @return 客房类型实体对象
+	 */
+	public RoomType getRoomTypeByTypeId(int typeId) {
+		// TODO Auto-generated method stub
+		RoomType roomType = new RoomType();
+		//获得连接
+		conn = ConnectionManager.getConnection();		
+		try {
+			//执行存储过程
+			psmt = conn.prepareStatement("SELECT * FROM Room WHERE TypeId=?");
+			psmt.setInt(1, typeId);
+			rs = psmt.executeQuery();
+			if (rs != null && rs.next()) {
+				roomType.setTypeId(rs.getInt("TypeId"));
+				roomType.setTypeName(rs.getString("TypeName").trim());
+				roomType.setTypePrice(rs.getDouble("TypePrice"));
+				roomType.setIsAddBed(rs.getString("IsAddBed").trim());
+				roomType.setAddBedPrice(rs.getDouble("AddBedPrice"));
+				roomType.setRemark(rs.getString("Remark").trim());
+			}
+		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			Common.errLog(ex.toString());
+			return null;
+		}
+		return roomType;
+	}
+	
+	/**
+	 * 根据客房类型名称获取客房类型编号
+	 * @param typeName 客房类型名称
+	 * @return 返回对应名称的类型编号
+	 */
+	public int getTypeIdByTypeName(String typeName) {
+		// TODO Auto-generated method stub
+		int typeId = 0;
+		ResultSet rs=null;
+		//Serializable ret=null;
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		//执行存储过程
+		try {
+			psmt = conn.prepareStatement("SELECT TypeName FROM RoomType WHERE TypeId =?");
+			//注册输出参数类型
+			//psmt.registerOutParameter(1, Types.INTEGER);
+			psmt.setString(2, typeName);
+			//执行存储过程
+			psmt.execute();
+			rs=psmt.getGeneratedKeys();
+			if(rs.next()){
+				typeId=rs.getInt(1);
+			}
+			
+		} catch (SQLException ex) {
+			Common.errLog(ex.toString());
+		} finally {
+			//ConnectionManager.closeCallableStatement(psmt);
+			ConnectionManager.closeConnection(conn);
+		}
+		return typeId;
+	}
+	
+	/**
+	 * 根据客房类型编号获取类型名称
+	 * @param typeId 客房类型编号
+	 * @return 返回对应编号的类型名称
+	 */
+	public String getTypeNameByTypeId(int typeId) {
+		// TODO Auto-generated method stub
+		String typeName = "";
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		ResultSet rs=null;
+		try {
+			//执行存储过程
+			psmt = conn.prepareStatement("SELECT  TypeName FROM RoomType"+
+		"WHERE TypeId = ?");
+			//注册输出参数类型
+			//psmt.registerOutParameter(1, Types.VARCHAR);
+			psmt.setInt(2, typeId);
+			psmt.execute();
+			rs=psmt.executeQuery();
+			while(rs.next()){
+			typeName = rs.getString(1).trim();
+			}
+		} catch (SQLException ex) {
+			Common.errLog(ex.toString());
+		} finally {
+			ConnectionManager.closeConnection(conn);
+		}
+		return typeName;
+	}
+	
+	/**
+	 * 修改客房类型信息
+	 * @param roomType 客房类型实体对象
+	 * @return 修改是否成功
+	 */
+	public boolean modifyRoomType(RoomType roomType) {
+		// TODO Auto-generated method stub
+		boolean flag = false;
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		try {
+			//执行存储过程
+			psmt = conn.prepareStatement("");
+			psmt.setInt(1, roomType.getTypeId());
+			psmt.setDouble(2, roomType.getTypePrice());
+			psmt.setString(3, roomType.getIsAddBed());
+			psmt.setDouble(4, roomType.getAddBedPrice());
+			psmt.setString(5, roomType.getRemark());
+			if (psmt.executeUpdate() > 0) {
+				flag = true;
+			}
+		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			Common.errLog(ex.toString());
+		} finally {
+			ConnectionManager.closeConnection(conn);
+		}
+		return flag;
+	}
+	
+}

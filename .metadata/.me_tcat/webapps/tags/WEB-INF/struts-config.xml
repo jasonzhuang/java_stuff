@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+  <data-sources />
+  <form-beans >
+    <form-bean name="textForm" type="com.struts.form.TextForm" />
+    <form-bean name="otherForm" type="com.struts.form.OtherForm" />
+    <form-bean name="selectForm" type="com.struts.form.SelectForm" />
+    <form-bean name="fileForm" type="com.struts.form.FileForm" />
+
+  </form-beans>
+
+  <global-exceptions />
+  <global-forwards >
+    <forward name="myforward" path="/page.jsp" />
+     <forward name="goPage" path="/page.jsp" />
+  </global-forwards>
+
+  <action-mappings >
+    <action
+      input="/errors.jsp"
+      path="/testErrors"
+      type="com.struts.action.TestErrorsAction" />
+    <action
+      input="/messages.jsp"
+      path="/testMessages"
+      type="com.struts.action.TestMessagesAction" />
+    <action
+      attribute="textForm"
+      input="/text.jsp"
+      name="textForm"
+      path="/processText"
+      scope="request"
+      type="com.struts.action.ProcessTextAction" />
+    <action
+      attribute="otherForm"
+      input="/radio.jsp"
+      name="otherForm"
+      path="/processOther"
+      scope="request"
+      type="com.struts.action.ProcessOtherAction" />
+    <action
+      attribute="selectForm"
+      input="/select.jsp"
+      name="selectForm"
+      path="/processSelect"
+      scope="request"
+      type="com.struts.action.ProcessSelectAction" />
+    <action
+      attribute="fileForm"
+      input="/file.jsp"
+      name="fileForm"
+      path="/processFile"
+      scope="request"
+      type="com.struts.action.ProcessFileAction" />
+ <action
+      input="/messagesLogic.jsp"
+      path="/msg"
+      type="com.struts.action.MsgAction" />
+  </action-mappings>
+
+
+  <message-resources parameter="com.struts.ApplicationResources" />
+  <message-resources key="MyResources" parameter="com.struts.MyResources" />  
+</struts-config>
+
+

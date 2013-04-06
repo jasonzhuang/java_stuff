@@ -1,0 +1,16 @@
+   #\u62a5\u9519\u4fe1\u606f
+   error.eventcodeRequest=<tr><td><strong>\u653b\u51fb\u4ee3\u53f7\u662f\u5fc5\u987b\u7684</strong></td></tr>
+   error.sqlAddError=<tr><td><strong>\u6dfb\u52a0\u5931\u8d25</strong></td></tr>
+   error.sqlDelError=<tr><td><strong>\u5220\u9664\u5931\u8d25</strong></td></tr>
+   
+   #\u663e\u793a\u4fe1\u606f
+   message.attacksolutionDB=\u653b\u51fb\u7c7b\u89e3\u51b3\u65b9\u6848DB\u63d2\u5165
+   message.attackcode=\u653b\u51fb\u4ee3\u53f7
+   message.attackdesc=\u653b\u51fb\u542b\u4e49
+   message.attacksolution=\u653b\u51fb\u89e3\u51b3\u624b\u6bb5
+   message.search=\u67e5\u627e
+   message.add=\u6dfb\u52a0
+   message.delete=\u5220\u9664
+   message.attacksolution=\u653b\u51fb\u7c7b\u89e3\u51b3\u65b9\u6848DB\u63d2\u5165
+   
+

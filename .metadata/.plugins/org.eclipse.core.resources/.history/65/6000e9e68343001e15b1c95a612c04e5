@@ -1,0 +1,56 @@
+package org.hotelmanager.dao.impl;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.hotelmanager.dao.UserDao;
+import org.hotelmanager.dbprocess.ConnectionManager;
+import org.hotelmanager.entity.User;
+import org.hotelmanager.utils.Common;
+import java.sql.Types;
+
+/**
+ * 类名：UserDaoImpl
+ * 作者：李君
+ * 作用：实现UserDao的相关方法
+ * 开发日期：2008-10-13
+ */
+public class UserDaoImpl implements UserDao {
+	
+	/**
+	 * 管理员登录
+	 * @param user 管理员实体对象
+	 * @return 登录状态
+	 */
+	public boolean isLogin(User user) {
+		// TODO Auto-generated method stub
+		boolean flag = false;
+		Connection conn = null;
+		//CallableStatement cstmt = null;
+		
+		conn = ConnectionManager.getConnection();
+		PreparedStatement psmt=conn.prepareStatement("insert into User values(?,?,?)");
+		
+		try {
+			
+			//cstmt.registerOutParameter(1, Types.INTEGER);//输出参数设置
+			cstmt.setString(2, user.getUserName());
+			cstmt.setString(3, user.getPassword());
+			cstmt.execute();
+			if (cstmt.getInt(1) > 0) {
+				flag = true;
+			}
+		} catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			Common.errLog(ex.toString());
+		} finally {
+			ConnectionManager.closeCallableStatement(cstmt);
+			ConnectionManager.closeConnection(conn);
+		}
+		return flag;
+	}
+
+}

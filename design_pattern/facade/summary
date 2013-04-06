@@ -1,0 +1,24 @@
+--------------适配器
+
+Iterator中有hasNext(),next(),remove()
+Enumeration中有hasMoreElements()和nextElement()
+一个EnumeratorIterator适配器,将枚举适配成迭代器
+public class EnumeratorIterator implements Iterator
+{
+	Enumeration enum;
+	public EnumeratorIterator(Enumeration enum)
+	{
+		this.enum=enum;
+	}
+	public boolean hasNext(){					//看起来像是调用hasNext()
+	return enum.hasMoreElements();                 //迭代器的hasNext()其实是委托给枚举的hasMoreElements()
+	}
+	public Object next(){
+	return enum.nextElement();						//迭代器的next()委托给枚举的nextElement()
+	}
+	public void remove(){
+	throw new UnsupportedOperationException()		//不支持迭代器的remove(),所以放弃
+	}
+-----------------------------外观模式
+外观模式提供简化的接口的同时，依然将系统完整的功能暴露出来
+外观模式：提供了一个统一的接口，用来访问子系统中的一群接口

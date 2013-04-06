@@ -1,0 +1,23 @@
+管理共享的资源，比如数据库连接，或者线程池
+public class Singleton{
+private static Singleton uniqueInstance;
+private Singleton(){}
+public static synchronized Singleton getInstance(){	 	//同步getInstance()可以有效处理多线程问题
+if(uniqueInstance==null){								//但是同步一个方法可能会造成程序执行效率下降100倍				
+uniqueInstance=new Singleton();
+}
+return uniqueInstance;
+}
+}
+指定创建对象个数
+public class Singleton{
+private static Singleton[] uniqueInstance;//注意数组的初始化
+private Singleton(){}
+public static synchronized Singleton[] getInstance(int count){	 	//同步getInstance()可以有效处理多线程问题
+uniqueInstance=new Sinleton[count];  //注意数组越界
+for(int i=0;i<count;i++){
+uniqueInstance[i]=new Singleton();
+}
+return uniqueInstance;
+}
+}

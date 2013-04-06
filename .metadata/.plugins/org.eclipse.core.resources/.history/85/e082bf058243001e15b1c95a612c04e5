@@ -1,0 +1,7 @@
+### configure MySQL ###
+MySqlDriver = com.mysql.jdbc.Driver
+MySqlUrl = jdbc\:mysql\://localhost/hotel
+user=root
+password=12345678
+
+   

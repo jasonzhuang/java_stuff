@@ -1,0 +1,229 @@
+package org.hotelmanager.dao.impl;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.hotelmanager.dao.RoomDao;
+import org.hotelmanager.dbprocess.ConnectionManager;
+import org.hotelmanager.entity.Room;
+import org.hotelmanager.utils.Common;
+
+/**
+ * 类名：RoomDaoImpl
+ * 作者：李君
+ * 作用：实现RoomDao接口的相关方法
+ * 开发日期：2008-10-17
+ */
+public class RoomDaoImpl implements RoomDao {
+	
+	/**
+	 * 连接对象
+	 */
+	private Connection conn = null;
+	
+	/**
+	 *预编译对象
+	 */
+	private PreparedStatement psmt = null;
+	
+	/**
+	 * 结果集对象
+	 */
+	private ResultSet rs = null;
+	
+	/**
+	 * 构造方法
+	 *
+	 */
+	public RoomDaoImpl() {
+		
+	}
+	
+	/**
+	 * 添加客房信息
+	 * @param room 客房实体对象
+	 * @return 添加是否成功
+	 */
+	public boolean addRoom(Room room) {
+		// TODO Auto-generated method stub
+		boolean flag = false;
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		try {
+			//执行存储过程
+			psmt = conn.prepareCall("{call usp_InsertRoom(?,?,?,?,?,?)}");
+			psmt.setString(1, room.getNumber());
+			psmt.setInt(2, room.getBedNumber());
+			psmt.setString(3, room.getDescription());
+			psmt.setString(4, room.getState());
+			psmt.setInt(5, room.getGuestNumber());
+			psmt.setInt(6, room.getTypeId());
+			if (psmt.executeUpdate() > 0) {
+				flag = true;
+			}
+		} catch (SQLException ex) {
+			Common.errLog(ex.toString());
+		} finally {
+			ConnectionManager.closeConnection(conn);
+		}
+		return flag;
+	}
+	
+	/**
+	 * 根据客房编号删除客房信息
+	 * @param roomId 客房编号
+	 * @return 删除是否成功
+	 */
+	public boolean delRoomByRoomId(int roomId) {
+		// TODO Auto-generated method stub
+		boolean flag = false;
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		try {
+			//执行存储过程
+			psmt = conn.prepareCall("{call usp_DeleteRoomByRoomId(?)}");
+			psmt.setInt(1, roomId);
+			if (psmt.executeUpdate() > 0) {
+				flag = true;
+			}
+		} catch (Exception ex) {
+			Common.errLog(ex.toString());
+		} finally {
+			ConnectionManager.closeCallableStatement(psmt);
+			ConnectionManager.closeConnection(conn);
+		}
+		return flag;
+	}
+	
+	/**
+	 * 获取所有客房信息
+	 * @return 返回客房实体集合
+	 */
+	public List<Room> getAllRooms() {
+		// TODO Auto-generated method stub
+		ArrayList<Room> rooms = new ArrayList<Room>();
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		try {
+			//执行存储过程
+			psmt = conn.prepareCall("{call usp_SelectAllRooms}");
+			rs = psmt.executeQuery();
+			while (rs != null && rs.next()) {
+				Room room = new Room();
+				room.setRoomId(rs.getInt("RoomId"));
+				room.setNumber(rs.getString("Number").trim());
+				room.setBedNumber(rs.getInt("BedNumber"));
+				room.setDescription(rs.getString("Description").trim());
+				room.setState(rs.getString("State").trim());
+				room.setGusetNumber(rs.getInt("GusetNumber"));
+				room.setTypeId(rs.getInt("TypeId"));
+				//添加到实体集合
+				rooms.add(room);
+			}
+		} catch (SQLException ex) {
+			Common.errLog(ex.toString());
+		} finally {
+			ConnectionManager.closeResultSet(rs);
+			ConnectionManager.closeConnection(conn);
+		}
+		return rooms;
+	}
+	
+	/**
+	 * 根据客房编号获取客房信息
+	 * @param roomId 客房编号
+	 * @return 返回客房实体对象
+	 */
+	public Room getRoomByRoomId(int roomId) {
+		// TODO Auto-generated method stub
+		Room room = new Room();
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		try {
+			//执行存储过程
+			psmt = conn.prepareCall("{call usp_SelectRoomByRoomId(?)}");
+			psmt.setInt(1, roomId);
+			rs = psmt.executeQuery();
+			if (rs != null && rs.next()) {
+				room.setRoomId(rs.getInt("RoomId"));
+				room.setNumber(rs.getString("Number").trim());
+				room.setBedNumber(rs.getInt("BedNumber"));
+				room.setDescription(rs.getString("Description").trim());
+				room.setState(rs.getString("State").trim());
+				room.setGusetNumber(rs.getInt("GusetNumber"));
+				room.setTypeId(rs.getInt("TypeId"));
+			}
+		} catch (Exception ex) {
+			Common.errLog(ex.toString());
+			return null;
+		} finally {
+			ConnectionManager.closeResultSet(rs);
+			ConnectionManager.closeCallableStatement(psmt);
+			ConnectionManager.closeConnection(conn);
+		}
+		return room;
+	}
+	
+	/**
+	 * 修改客房信息
+	 * @param room 客房实体对象
+	 * @return 修改是否成功
+	 */
+	public boolean modifyRoom(Room room) {
+		// TODO Auto-generated method stub
+		boolean flag = false;
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		try {
+			//执行存储过程
+			psmt = conn.prepareCall("{call usp_UpdateRoomByRoomId(?,?,?,?,?,?)}");
+			//设置存储过程参数
+			psmt.setInt(1, room.getRoomId());
+			psmt.setInt(2, room.getBedNumber());
+			psmt.setString(3, room.getDescription().trim());
+			psmt.setString(4, room.getState().trim());
+			psmt.setInt(5, room.getGuestNumber());
+			psmt.setInt(6, room.getTypeId());
+			if (psmt.executeUpdate() > 0) {
+				flag = true;
+			}
+		} catch (SQLException ex) {
+			Common.errLog(ex.toString());
+		} finally {
+			ConnectionManager.closeCallableStatement(psmt);
+			ConnectionManager.closeConnection(conn);
+		}
+		return flag;
+	}
+	
+	/**
+	 * 根据客房编号修改客房状态信息
+	 * @param roomId 客房编号
+	 * @return 修改是否成功
+	 */
+	public boolean modifyRoomState(int roomId, String state) {
+		// TODO Auto-generated method stub
+		boolean flag = false;
+		//获得连接
+		conn = ConnectionManager.getConnection();
+		try {
+			//执行存储过程
+			psmt = conn.prepareCall("{call usp_UpdateRoomStateByRoomId(?,?)}");
+			psmt.setInt(1, roomId);
+			psmt.setString(2, state);
+			if (psmt.executeUpdate() > 0) {
+				flag = true;
+			}
+		} catch (Exception ex) {
+			Common.errLog(ex.toString());
+		} finally {
+			ConnectionManager.closeConnection(conn);
+		}
+		return flag;
+	}
+
+}

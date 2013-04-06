@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	
+	<listener>
+      <listener-class>com.zjut.listener.OnlineListener</listener-class>
+  	</listener>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>StuLoginConfirm</servlet-name>
+    <servlet-class>com.zjut.servlet.StuLoginConfirm</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>AdmLoginConfirm</servlet-name>
+    <servlet-class>com.zjut.servlet.AdmLoginConfirm</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>TeaLoginConfirm</servlet-name>
+    <servlet-class>com.zjut.servlet.TeaLoginConfirm</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>enrolCourse</servlet-name>
+    <servlet-class>com.zjut.servlet.enrolCourse</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>ModifyTeacher</servlet-name>
+    <servlet-class>com.zjut.servlet.ModifyTeacher</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>Addcourse</servlet-name>
+    <servlet-class>com.zjut.servlet.Addcourse</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>Enrolstudent</servlet-name>
+    <servlet-class>com.zjut.servlet.Enrolstudent</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>UpdateStudent</servlet-name>
+    <servlet-class>com.zjut.servlet.UpdateStudent</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>GiveScore</servlet-name>
+    <servlet-class>com.zjut.servlet.GiveScore</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>deleteCourse</servlet-name>
+    <servlet-class>com.zjut.servlet.deleteCourse</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>Logout</servlet-name>
+    <servlet-class>com.zjut.servlet.Logout</servlet-class>
+  </servlet>
+
+
+
+
+
+
+
+
+  <servlet-mapping>
+    <servlet-name>StuLoginConfirm</servlet-name>
+    <url-pattern>/stuloginConfirm</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AdmLoginConfirm</servlet-name>
+    <url-pattern>/admloginConfirm</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TeaLoginConfirm</servlet-name>
+    <url-pattern>/tealoginConfirm</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>enrolCourse</servlet-name>
+    <url-pattern>/enrolCourse</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ModifyTeacher</servlet-name>
+    <url-pattern>/modifyTeacher</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Addcourse</servlet-name>
+    <url-pattern>/addcourse</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Enrolstudent</servlet-name>
+    <url-pattern>/enrolStudent</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UpdateStudent</servlet-name>
+    <url-pattern>/updateStudent</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GiveScore</servlet-name>
+    <url-pattern>/giveScore</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>deleteCourse</servlet-name>
+    <url-pattern>/deleteCourse</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Logout</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
+  
+ 
+ 
+ 
+  <error-page>
+ 	 <error-code>404</error-code>
+ 	 <location>/notFound.jsp</location>
+ </error-page>
+</web-app>
